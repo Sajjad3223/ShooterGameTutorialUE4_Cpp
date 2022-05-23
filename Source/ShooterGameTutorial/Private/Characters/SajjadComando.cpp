@@ -36,6 +36,31 @@ void ASajjadComando::Tick(float DeltaTime)
 void ASajjadComando::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	PlayerInputComponent->BindAxis("MoveForward",this,&ASajjadComando::MoveForward);
+	PlayerInputComponent->BindAxis("MoveRight",this,&ASajjadComando::MoveRight);
+	PlayerInputComponent->BindAxis("Turn",this,&ASajjadComando::AddControllerYawInput);
+	PlayerInputComponent->BindAxis("TurnUp",this,&ASajjadComando::AddControllerPitchInput);
+	PlayerInputComponent->BindAxis("TurnRate",this,&ASajjadComando::Turn);
+	PlayerInputComponent->BindAxis("TurnUpRate",this,&ASajjadComando::TurnUp);
+}
 
+void ASajjadComando::MoveForward(float AxisValue)
+{
+	AddMovementInput(GetActorForwardVector() * AxisValue);
+}
+
+void ASajjadComando::MoveRight(float AxisValue)
+{
+	AddMovementInput(GetActorRightVector() * AxisValue);
+}
+
+void ASajjadComando::Turn(float AxisValue)
+{
+	AddControllerYawInput(AxisValue * RotateSensitivity * GetWorld()->GetDeltaSeconds());
+}
+
+void ASajjadComando::TurnUp(float AxisValue)
+{
+	AddControllerPitchInput(AxisValue * RotateSensitivity * GetWorld()->GetDeltaSeconds());
 }
 

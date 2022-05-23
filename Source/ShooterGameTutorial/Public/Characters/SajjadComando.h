@@ -26,9 +26,17 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 private:
-UPROPERTY(EditAnywhere)
+	void MoveForward(float AxisValue);
+	void MoveRight(float AxisValue);
+	void Turn(float AxisValue);
+	void TurnUp(float AxisValue);
+
+	UPROPERTY(EditAnywhere)
 	class USpringArmComponent* SpringArm;
 	UPROPERTY(EditAnywhere)
 	class UCameraComponent* Camera;
-
+	
+	UPROPERTY(EditAnywhere)
+	float RotateSensitivity = 60;
+	
 };
