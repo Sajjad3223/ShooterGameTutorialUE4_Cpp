@@ -42,6 +42,7 @@ void ASajjadComando::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAxis("TurnUp",this,&ASajjadComando::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("TurnRate",this,&ASajjadComando::Turn);
 	PlayerInputComponent->BindAxis("TurnUpRate",this,&ASajjadComando::TurnUp);
+	PlayerInputComponent->BindAction("Jump",IE_Pressed,this,&ASajjadComando::Jump);
 }
 
 void ASajjadComando::MoveForward(float AxisValue)
