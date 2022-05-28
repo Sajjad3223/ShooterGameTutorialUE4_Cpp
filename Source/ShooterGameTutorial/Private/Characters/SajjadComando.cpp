@@ -23,10 +23,13 @@ ASajjadComando::ASajjadComando()
 void ASajjadComando::BeginPlay()
 {
 	Super::BeginPlay();
-	if(GunClass == nullptr)
+
+	GetMesh()->HideBoneByName(FName("gun"),EPhysBodyOp::PBO_None);
+	
+	if(GunClass)
 	{
 		AGun* Gun = GetWorld()->SpawnActor<AGun>(GunClass);
-		Gun->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform);
+		Gun->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,FName("WeaponSocket"));
 		Gun->SetOwner(this);
 	}
 }
