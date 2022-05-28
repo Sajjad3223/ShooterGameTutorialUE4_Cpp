@@ -3,6 +3,7 @@
 
 #include "Characters/SajjadComando.h"
 
+#include "Actors/Gun.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
@@ -22,7 +23,12 @@ ASajjadComando::ASajjadComando()
 void ASajjadComando::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	if(GunClass == nullptr)
+	{
+		AGun* Gun = GetWorld()->SpawnActor<AGun>(GunClass);
+		Gun->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform);
+		Gun->SetOwner(this);
+	}
 }
 
 // Called every frame

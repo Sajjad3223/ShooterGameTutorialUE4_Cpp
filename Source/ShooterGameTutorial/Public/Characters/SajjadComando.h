@@ -39,4 +39,6 @@ private:
 	UPROPERTY(EditAnywhere)
 	float RotateSensitivity = 60;
 	
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class AGun> GunClass;
 };
