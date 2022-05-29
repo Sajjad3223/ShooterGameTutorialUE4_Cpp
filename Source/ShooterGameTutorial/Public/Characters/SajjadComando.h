@@ -33,7 +33,8 @@ private:
 	void Turn(float AxisValue);
 	void TurnUp(float AxisValue);
 
-	void Fire();
+	void StartFire();
+	void StopFire();
 
 	UPROPERTY(EditAnywhere)
 	class USpringArmComponent* SpringArm;

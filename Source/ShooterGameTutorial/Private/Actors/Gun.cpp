@@ -31,7 +31,26 @@ void AGun::BeginPlay()
 void AGun::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if(bIsShooting)
+	{
+		if(FireTimer >= FireRate)
+		{
+			Shoot();
+			FireTimer = 0;
+		}
+	}
+	
+	FireTimer += DeltaTime;
+}
 
+void AGun::StartShoot()
+{
+	bIsShooting = true;
+}
+
+void AGun::EndShoot()
+{
+	bIsShooting = false;
 }
 
 void AGun::Shoot()

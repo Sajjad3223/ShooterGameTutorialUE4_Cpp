@@ -55,7 +55,8 @@ void ASajjadComando::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAxis("TurnRate",this,&ASajjadComando::Turn);
 	PlayerInputComponent->BindAxis("TurnUpRate",this,&ASajjadComando::TurnUp);
 	PlayerInputComponent->BindAction("Jump",IE_Pressed,this,&ASajjadComando::Jump);
-	PlayerInputComponent->BindAction("Fire",IE_Pressed,this,&ASajjadComando::Fire);
+	PlayerInputComponent->BindAction("Fire",IE_Pressed,this,&ASajjadComando::StartFire);
+	PlayerInputComponent->BindAction("Fire",IE_Released,this,&ASajjadComando::StopFire);
 }
 
 void ASajjadComando::MoveForward(float AxisValue)
@@ -78,7 +79,12 @@ void ASajjadComando::TurnUp(float AxisValue)
 	AddControllerPitchInput(AxisValue * RotateSensitivity * GetWorld()->GetDeltaSeconds());
 }
 
-void ASajjadComando::Fire()
+void ASajjadComando::StartFire()
 {
-	Gun->Shoot();
+	Gun->StartShoot();
+}
+
+void ASajjadComando::StopFire()
+{
+	Gun->EndShoot();
 }

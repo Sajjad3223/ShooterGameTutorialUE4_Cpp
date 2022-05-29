@@ -18,13 +18,22 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	//Shoot Function
-	void Shoot();
+	//Shoot Functions
+	void StartShoot();
+	void EndShoot();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 private:
+	void Shoot();
+
+	bool bIsShooting = false;
+	float FireTimer = 0;
+	
+	UPROPERTY(EditAnywhere)
+	float FireRate = 0.2f;
+	
 	// Scene Component
 	UPROPERTY(EditAnywhere)
 	USceneComponent* Root;
