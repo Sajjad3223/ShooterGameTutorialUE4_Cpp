@@ -45,11 +45,16 @@ void AGun::Shoot()
 	// Get Camera Location and Rotation
 	APawn* OwnerPawn = Cast<APawn>(GetOwner());
 	OwnerPawn->GetController()->GetPlayerViewPoint(OUT CameraLocation,OUT CameraRotation);
-	
-	//Test Values
-	DrawDebugCamera(GetWorld(),CameraLocation,CameraRotation,90,2,FColor::Red,true);
 
+	//Calculate Trace End
+	FVector TraceEnd = CameraLocation + CameraRotation.Vector() * TraceRange;
+	
 	//LineTrace
+	FHitResult HitResult;
+	GetWorld()->LineTraceSingleByChannel(OUT HitResult,CameraLocation,TraceEnd,ECollisionChannel::ECC_GameTraceChannel1);
+
+	//Test Linetrace
+	DrawDebugLine(GetWorld(),CameraLocation,TraceEnd,FColor::Red,true,-1,0,5);
 
 	//Check if Hit Something and do the function
 }

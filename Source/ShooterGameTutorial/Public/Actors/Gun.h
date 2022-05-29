@@ -32,4 +32,8 @@ private:
 	//Skeletal Mesh Component
 	UPROPERTY(EditAnywhere)
 	USkeletalMeshComponent* GunMesh;
+
+	//Range for Line trace
+	UPROPERTY(EditAnywhere)
+	float TraceRange = 10000;
 };
