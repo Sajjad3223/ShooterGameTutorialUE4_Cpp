@@ -36,4 +36,8 @@ private:
 	//Range for Line trace
 	UPROPERTY(EditAnywhere)
 	float TraceRange = 10000;
+
+	//Particle System for fire
+	UPROPERTY(EditAnywhere)
+	UParticleSystem* FireParticleSystem = nullptr;
 };

@@ -4,6 +4,7 @@
 #include "Actors/Gun.h"
 
 #include "DrawDebugHelpers.h"
+#include "Kismet/GameplayStatics.h"
 
 #define OUT
 
@@ -36,6 +37,10 @@ void AGun::Tick(float DeltaTime)
 void AGun::Shoot()
 {
 	//TODO play a Particle System
+	if(FireParticleSystem != nullptr)
+	{
+		UGameplayStatics::SpawnEmitterAttached(FireParticleSystem,GunMesh,FName("MuzzleFlashSocket"));
+	}
 	//TODO play a Sound
 
 	//Declare Variables
@@ -52,9 +57,6 @@ void AGun::Shoot()
 	//LineTrace
 	FHitResult HitResult;
 	GetWorld()->LineTraceSingleByChannel(OUT HitResult,CameraLocation,TraceEnd,ECollisionChannel::ECC_GameTraceChannel1);
-
-	//Test Linetrace
-	DrawDebugLine(GetWorld(),CameraLocation,TraceEnd,FColor::Red,true,-1,0,5);
 
 	//Check if Hit Something and do the function
 }
