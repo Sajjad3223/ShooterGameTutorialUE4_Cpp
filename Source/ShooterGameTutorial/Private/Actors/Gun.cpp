@@ -56,8 +56,19 @@ void AGun::Shoot()
 	
 	//LineTrace
 	FHitResult HitResult;
-	GetWorld()->LineTraceSingleByChannel(OUT HitResult,CameraLocation,TraceEnd,ECollisionChannel::ECC_GameTraceChannel1);
+	if(GetWorld()->LineTraceSingleByChannel(OUT HitResult,CameraLocation,TraceEnd,ECollisionChannel::ECC_GameTraceChannel1))
+	{
+		//Check if Hit Something and do the function
+		
+		//Spawn Emitter
+		if(ImpactParticleSystem != nullptr)
+			UGameplayStatics::SpawnEmitterAtLocation(this,ImpactParticleSystem,HitResult.Location,HitResult.ImpactNormal.Rotation());
 
-	//Check if Hit Something and do the function
+		//Play Sound
+
+		//Apply Damage
+	}
+
+	
 }
 

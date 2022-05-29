@@ -40,4 +40,8 @@ private:
 	//Particle System for fire
 	UPROPERTY(EditAnywhere)
 	UParticleSystem* FireParticleSystem = nullptr;
+	
+	//Particle System for Impact
+	UPROPERTY(EditAnywhere)
+	UParticleSystem* ImpactParticleSystem = nullptr;
 };
