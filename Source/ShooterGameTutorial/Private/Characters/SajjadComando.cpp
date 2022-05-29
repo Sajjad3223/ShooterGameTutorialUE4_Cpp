@@ -24,14 +24,17 @@ void ASajjadComando::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// Hide the bone which has a gun
 	GetMesh()->HideBoneByName(FName("gun"),EPhysBodyOp::PBO_None);
-	
+
+	//  spawn a gun and attach it to character
 	if(GunClass)
 	{
-		AGun* Gun = GetWorld()->SpawnActor<AGun>(GunClass);
+		Gun = GetWorld()->SpawnActor<AGun>(GunClass);
 		Gun->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,FName("WeaponSocket"));
 		Gun->SetOwner(this);
 	}
+	
 }
 
 // Called every frame
@@ -52,6 +55,7 @@ void ASajjadComando::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAxis("TurnRate",this,&ASajjadComando::Turn);
 	PlayerInputComponent->BindAxis("TurnUpRate",this,&ASajjadComando::TurnUp);
 	PlayerInputComponent->BindAction("Jump",IE_Pressed,this,&ASajjadComando::Jump);
+	PlayerInputComponent->BindAction("Fire",IE_Pressed,this,&ASajjadComando::Fire);
 }
 
 void ASajjadComando::MoveForward(float AxisValue)
@@ -74,3 +78,7 @@ void ASajjadComando::TurnUp(float AxisValue)
 	AddControllerPitchInput(AxisValue * RotateSensitivity * GetWorld()->GetDeltaSeconds());
 }
 
+void ASajjadComando::Fire()
+{
+	Gun->Shoot();
+}

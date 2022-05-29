@@ -3,6 +3,10 @@
 
 #include "Actors/Gun.h"
 
+#include "DrawDebugHelpers.h"
+
+#define OUT
+
 // Sets default values
 AGun::AGun()
 {
@@ -27,5 +31,26 @@ void AGun::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void AGun::Shoot()
+{
+	//TODO play a Particle System
+	//TODO play a Sound
+
+	//Declare Variables
+	FVector CameraLocation;
+	FRotator CameraRotation;
+	
+	// Get Camera Location and Rotation
+	APawn* OwnerPawn = Cast<APawn>(GetOwner());
+	OwnerPawn->GetController()->GetPlayerViewPoint(OUT CameraLocation,OUT CameraRotation);
+	
+	//Test Values
+	DrawDebugCamera(GetWorld(),CameraLocation,CameraRotation,90,2,FColor::Red,true);
+
+	//LineTrace
+
+	//Check if Hit Something and do the function
 }
 

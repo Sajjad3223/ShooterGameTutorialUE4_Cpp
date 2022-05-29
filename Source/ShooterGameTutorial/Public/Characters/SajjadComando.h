@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "SajjadComando.generated.h"
 
+class AGun;
+
 UCLASS()
 class SHOOTERGAMETUTORIAL_API ASajjadComando : public ACharacter
 {
@@ -31,6 +33,8 @@ private:
 	void Turn(float AxisValue);
 	void TurnUp(float AxisValue);
 
+	void Fire();
+
 	UPROPERTY(EditAnywhere)
 	class USpringArmComponent* SpringArm;
 	UPROPERTY(EditAnywhere)
@@ -40,5 +44,7 @@ private:
 	float RotateSensitivity = 60;
 	
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<class AGun> GunClass;
+	TSubclassOf<AGun> GunClass;
+
+	AGun* Gun;
 };
