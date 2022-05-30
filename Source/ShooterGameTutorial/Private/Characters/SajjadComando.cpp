@@ -34,7 +34,8 @@ void ASajjadComando::BeginPlay()
 		Gun->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,FName("WeaponSocket"));
 		Gun->SetOwner(this);
 	}
-	
+
+	Health = MaxHealth;
 }
 
 // Called every frame
@@ -57,6 +58,18 @@ void ASajjadComando::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAction("Jump",IE_Pressed,this,&ASajjadComando::Jump);
 	PlayerInputComponent->BindAction("Fire",IE_Pressed,this,&ASajjadComando::StartFire);
 	PlayerInputComponent->BindAction("Fire",IE_Released,this,&ASajjadComando::StopFire);
+}
+
+float ASajjadComando::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator,
+	AActor* DamageCauser)
+{
+	float Damage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	
+	Health -= FMath::Min(Health,Damage);; // Health = Health - FMath::Min(Health,Damage)
+
+	UE_LOG(LogTemp,Warning,TEXT("Health is: %f"),Health);
+	
+	return Damage;
 }
 
 void ASajjadComando::MoveForward(float AxisValue)

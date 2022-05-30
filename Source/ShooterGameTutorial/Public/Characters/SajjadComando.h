@@ -27,15 +27,21 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	
+	//Override Receive any damage
+	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 private:
+	//Axis Functions
 	void MoveForward(float AxisValue);
 	void MoveRight(float AxisValue);
 	void Turn(float AxisValue);
 	void TurnUp(float AxisValue);
 
+	//Action Functions
 	void StartFire();
 	void StopFire();
 
+	//Components
 	UPROPERTY(EditAnywhere)
 	class USpringArmComponent* SpringArm;
 	UPROPERTY(EditAnywhere)
@@ -43,9 +49,14 @@ private:
 	
 	UPROPERTY(EditAnywhere)
 	float RotateSensitivity = 60;
-	
+
+	//Gun Properties
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<AGun> GunClass;
-
 	AGun* Gun;
+
+	//Health Properties
+	UPROPERTY(EditAnywhere)
+	float MaxHealth = 100;
+	float Health;
 };
