@@ -55,7 +55,6 @@ void AGun::EndShoot()
 
 void AGun::Shoot()
 {
-	//TODO play a Particle System
 	if(FireParticleSystem != nullptr)
 	{
 		UGameplayStatics::SpawnEmitterAttached(FireParticleSystem,GunMesh,FName("MuzzleFlashSocket"));
@@ -68,7 +67,8 @@ void AGun::Shoot()
 	
 	// Get Camera Location and Rotation
 	APawn* OwnerPawn = Cast<APawn>(GetOwner());
-	OwnerPawn->GetController()->GetPlayerViewPoint(OUT CameraLocation,OUT CameraRotation);
+	AController* OwnerController = OwnerPawn->GetController();
+	OwnerController->GetPlayerViewPoint(OUT CameraLocation,OUT CameraRotation);
 
 	//Calculate Trace End
 	FVector TraceEnd = CameraLocation + CameraRotation.Vector() * TraceRange;
@@ -85,7 +85,15 @@ void AGun::Shoot()
 
 		//Play Sound
 
+
+		FVector ShotDirection = HitResult.Location - CameraLocation;
+		
 		//Apply Damage
+		if(HitResult.Actor != nullptr)
+		{
+			FPointDamageEvent DamageEvent(Damage,HitResult,ShotDirection,nullptr);
+			HitResult.Actor->TakeDamage(Damage,DamageEvent,OwnerController,this);
+		}
 	}
 
 	

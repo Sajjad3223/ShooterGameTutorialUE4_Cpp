@@ -46,6 +46,10 @@ private:
 	UPROPERTY(EditAnywhere)
 	float TraceRange = 10000;
 
+	//Gun Damage
+	UPROPERTY(EditAnywhere)
+	float Damage = 20;
+
 	//Particle System for fire
 	UPROPERTY(EditAnywhere)
 	UParticleSystem* FireParticleSystem = nullptr;
