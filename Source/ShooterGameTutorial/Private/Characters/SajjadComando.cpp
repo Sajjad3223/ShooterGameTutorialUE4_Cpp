@@ -5,6 +5,7 @@
 
 #include "Actors/Gun.h"
 #include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
 // Sets default values
@@ -68,6 +69,14 @@ float ASajjadComando::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 	Health -= FMath::Min(Health,Damage);; // Health = Health - FMath::Min(Health,Damage)
 
 	UE_LOG(LogTemp,Warning,TEXT("Health is: %f"),Health);
+	if(IsDead())
+	{
+		DetachFromControllerPendingDestroy();
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+		FTimerHandle DestroyTimer;
+		GetWorldTimerManager().SetTimer(DestroyTimer,this,&ASajjadComando::DestroyCharacter,DestroyDelay,false);
+	}
 	
 	return Damage;
 }
@@ -100,4 +109,15 @@ void ASajjadComando::StartFire()
 void ASajjadComando::StopFire()
 {
 	Gun->EndShoot();
+}
+
+bool ASajjadComando::IsDead()
+{
+	return Health <= 0;
+}
+
+void ASajjadComando::DestroyCharacter()
+{
+	Gun->Destroy();
+	Destroy();
 }

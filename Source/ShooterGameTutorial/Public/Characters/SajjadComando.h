@@ -59,4 +59,11 @@ private:
 	UPROPERTY(EditAnywhere)
 	float MaxHealth = 100;
 	float Health;
+	UFUNCTION(BlueprintPure)
+	bool IsDead();
+
+	//Destroy Properties
+	UPROPERTY(EditAnywhere)
+	float DestroyDelay = 5;
+	void DestroyCharacter();
 };
