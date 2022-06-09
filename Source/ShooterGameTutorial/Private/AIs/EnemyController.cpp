@@ -4,22 +4,28 @@
 #include "AIs/EnemyController.h"
 
 #include "Kismet/GameplayStatics.h"
+#include "UObject/ConstructorHelpers.h"
+#include "BehaviorTree/BehaviorTree.h"
 
 AEnemyController::AEnemyController()
 {
+	ConstructorHelpers::FObjectFinder<UBehaviorTree> BehaviorTreeObject(TEXT("/Game/AI/BT_EnemyBehavior.BT_EnemyBehavior"));
+	if(BehaviorTreeObject.Succeeded())
+		BehaviorTree = BehaviorTreeObject.Object;
 }
 
 
 void AEnemyController::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp,Warning,TEXT("This pawn is conrolled by EnemyController"));
-
+	
 	APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(this,0);
 
-	MoveToLocation(FVector(1303,700,145));
+	RunBehaviorTree(BehaviorTree);
 
-	SetFocus(PlayerPawn,EAIFocusPriority::Gameplay);
+	/*MoveToActor(PlayerPawn);
+
+	SetFocus(PlayerPawn,EAIFocusPriority::Gameplay);*/
 	
 }
 
