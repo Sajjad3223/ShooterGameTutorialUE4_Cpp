@@ -19,11 +19,13 @@ AEnemyController::AEnemyController()
 	AIPerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(FName("Perception Component"));
 	SightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>(FName("Sight Config"));
 
-	SightConfig->SightRadius = 500;
+	SightConfig->SightRadius = 700;
 	SightConfig->LoseSightRadius = 1000;
 	SightConfig->PeripheralVisionAngleDegrees = 60;
 
 	AIPerceptionComponent->ConfigureSense(*SightConfig);
+
+	AIPerceptionComponent->OnTargetPerceptionUpdated.AddDynamic(this,&AEnemyController::OnPlayerSeen);
 
 	SetGenericTeamId(FGenericTeamId(1));
 }
@@ -44,10 +46,9 @@ void AEnemyController::BeginPlay()
 	
 }
 
-void AEnemyController::Tick(float DeltaTime)
+void AEnemyController::OnPlayerSeen(AActor* Actor, FAIStimulus Stimulus)
 {
-	Super::Tick(DeltaTime);
-	if(LineOfSightTo(PlayerPawn))
+	if(Stimulus.WasSuccessfullySensed())
 	{
 		GetBlackboardComponent()->SetValueAsObject(FName("Player"),PlayerPawn);
 	}
@@ -55,6 +56,12 @@ void AEnemyController::Tick(float DeltaTime)
 	{
 		GetBlackboardComponent()->ClearValue(FName("Player"));
 	}
+}
+
+void AEnemyController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	
 }
 
 

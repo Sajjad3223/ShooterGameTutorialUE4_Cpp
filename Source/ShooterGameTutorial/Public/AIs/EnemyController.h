@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
+#include "Perception/AIPerceptionTypes.h"
 #include "EnemyController.generated.h"
 
 /**
@@ -24,6 +25,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 private:
+	UFUNCTION()
+	void OnPlayerSeen(AActor* Actor, FAIStimulus Stimulus);
+	
 	UPROPERTY(EditAnywhere)
 	UBehaviorTree* BehaviorTree;
 
