@@ -25,7 +25,7 @@ AEnemyController::AEnemyController()
 
 	AIPerceptionComponent->ConfigureSense(*SightConfig);
 
-	
+	SetGenericTeamId(FGenericTeamId(1));
 }
 
 
@@ -38,7 +38,6 @@ void AEnemyController::BeginPlay()
 	RunBehaviorTree(BehaviorTree);
 
 	GetBlackboardComponent()->SetValueAsVector(FName("Destination"),PlayerPawn->GetActorLocation());
-	
 	
 	/*MoveToActor(PlayerPawn);
 	SetFocus(PlayerPawn,EAIFocusPriority::Gameplay);*/

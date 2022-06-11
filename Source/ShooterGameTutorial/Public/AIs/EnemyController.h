@@ -29,7 +29,7 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	class UAIPerceptionComponent* AIPerceptionComponent;
-
+	
 	class UAISenseConfig_Sight* SightConfig;
 
 	APawn* PlayerPawn;

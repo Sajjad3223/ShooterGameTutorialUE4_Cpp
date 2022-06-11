@@ -3,25 +3,21 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GenericTeamAgentInterface.h"
 #include "GameFramework/Character.h"
 #include "SajjadComando.generated.h"
 
 class AGun;
 
 UCLASS()
-class SHOOTERGAMETUTORIAL_API ASajjadComando : public ACharacter
+class SHOOTERGAMETUTORIAL_API ASajjadComando : public ACharacter, public IGenericTeamAgentInterface
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this character's properties
 	ASajjadComando();
-
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-public:	
+	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -30,7 +26,15 @@ public:
 	
 	//Override Receive any damage
 	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+
+	virtual FGenericTeamId GetGenericTeamId() const override;
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+	
 private:
+	FGenericTeamId TeamId;
+	
 	//Axis Functions
 	void MoveForward(float AxisValue);
 	void MoveRight(float AxisValue);

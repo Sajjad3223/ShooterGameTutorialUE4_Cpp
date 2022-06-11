@@ -18,6 +18,9 @@ ASajjadComando::ASajjadComando()
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(FName("Camera"));
 	Camera->SetupAttachment(SpringArm);
+
+	//Set Team Id
+	TeamId = FGenericTeamId(2);
 }
 
 // Called when the game starts or when spawned
@@ -79,6 +82,11 @@ float ASajjadComando::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 	}
 	
 	return Damage;
+}
+
+FGenericTeamId ASajjadComando::GetGenericTeamId() const
+{
+	return TeamId;
 }
 
 void ASajjadComando::MoveForward(float AxisValue)
