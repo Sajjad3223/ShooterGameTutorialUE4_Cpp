@@ -46,6 +46,26 @@ void AShooterPlayerController::PauseGame() {
 		FInputModeUIOnly UiMode;
 		SetInputMode(UiMode);
 
+		PauseMenu->SetupController(this);
+
 		PauseMenu->AddToViewport();
 	}
+}
+
+void AShooterPlayerController::ResumeGame() {
+	EnableInput(this);
+	UGameplayStatics::SetGlobalTimeDilation(this, 1);
+	SetShowMouseCursor(false);
+
+	FInputModeGameOnly GameOnly;
+	SetInputMode(GameOnly);
+}
+
+void AShooterPlayerController::RestartGame() {
+	ResumeGame();
+	UGameplayStatics::OpenLevel(this, FName("targetsMap"));
+}
+
+void AShooterPlayerController::QuitGame() {
+	ConsoleCommand("Quit");
 }

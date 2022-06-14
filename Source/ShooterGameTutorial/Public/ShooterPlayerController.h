@@ -15,6 +15,10 @@ class SHOOTERGAMETUTORIAL_API AShooterPlayerController : public APlayerControlle
 	GENERATED_BODY()
 public:
 	AShooterPlayerController();
+
+	void ResumeGame();
+	void RestartGame();
+	void QuitGame();
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
