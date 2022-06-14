@@ -18,6 +18,12 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	virtual void SetupInputComponent() override;
 private:
 	TSubclassOf<class UPlayerHud> PlayerHudClass;
+	TSubclassOf<class UPauseMenu> PauseMenuClass;
+
+	UFUNCTION()
+	void PauseGame();
 };

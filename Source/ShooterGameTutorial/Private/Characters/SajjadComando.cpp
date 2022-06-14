@@ -94,6 +94,12 @@ void ASajjadComando::Shoot()
 	Gun->Fire();
 }
 
+float ASajjadComando::GetHealth()
+{
+	// Return Health Normalized
+	return Health / MaxHealth;
+}
+
 void ASajjadComando::MoveForward(float AxisValue)
 {
 	AddMovementInput(GetActorForwardVector() * AxisValue);

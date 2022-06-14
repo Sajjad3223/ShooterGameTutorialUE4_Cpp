@@ -14,4 +14,7 @@ class SHOOTERGAMETUTORIAL_API UPlayerHud : public UUserWidget
 {
 	GENERATED_BODY()
 	
+private:
+	UFUNCTION(BlueprintPure)
+	float GetPlayerHealth();
 };
