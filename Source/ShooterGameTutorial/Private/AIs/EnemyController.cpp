@@ -34,8 +34,6 @@ AEnemyController::AEnemyController()
 void AEnemyController::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	PlayerPawn = UGameplayStatics::GetPlayerPawn(this,0);
 
 	RunBehaviorTree(BehaviorTree);
 
@@ -46,11 +44,13 @@ void AEnemyController::OnPlayerSeen(AActor* Actor, FAIStimulus Stimulus)
 {
 	if(Stimulus.WasSuccessfullySensed())
 	{
-		GetBlackboardComponent()->SetValueAsObject(FName("Player"),PlayerPawn);
+		SetFocus(Actor);
+		GetBlackboardComponent()->SetValueAsObject(FName("Player"),Actor);
 	}
 	else
 	{
-		GetBlackboardComponent()->SetValueAsVector(FName("LastSeenLocation"), PlayerPawn->GetActorLocation());
+		ClearFocus(EAIFocusPriority::Gameplay);
+		GetBlackboardComponent()->SetValueAsVector(FName("LastSeenLocation"), Actor->GetActorLocation());
 		GetBlackboardComponent()->ClearValue(FName("Player"));
 	}
 }

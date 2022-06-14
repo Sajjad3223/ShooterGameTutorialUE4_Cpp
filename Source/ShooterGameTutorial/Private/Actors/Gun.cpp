@@ -53,6 +53,10 @@ void AGun::EndShoot()
 	bIsShooting = false;
 }
 
+void AGun::Fire() {
+	Shoot();
+}
+
 void AGun::Shoot()
 {
 	if(FireParticleSystem != nullptr)
@@ -75,7 +79,10 @@ void AGun::Shoot()
 	
 	//LineTrace
 	FHitResult HitResult;
-	if(GetWorld()->LineTraceSingleByChannel(OUT HitResult,CameraLocation,TraceEnd,ECollisionChannel::ECC_GameTraceChannel1))
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(this);
+	Params.AddIgnoredActor(GetOwner());
+	if(GetWorld()->LineTraceSingleByChannel(OUT HitResult,CameraLocation,TraceEnd,ECollisionChannel::ECC_GameTraceChannel1,Params))
 	{
 		//Check if Hit Something and do the function
 		

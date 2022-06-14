@@ -89,6 +89,11 @@ FGenericTeamId ASajjadComando::GetGenericTeamId() const
 	return TeamId;
 }
 
+void ASajjadComando::Shoot()
+{
+	Gun->Fire();
+}
+
 void ASajjadComando::MoveForward(float AxisValue)
 {
 	AddMovementInput(GetActorForwardVector() * AxisValue);

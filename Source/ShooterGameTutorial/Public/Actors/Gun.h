@@ -22,6 +22,8 @@ public:
 	void StartShoot();
 	void EndShoot();
 
+	void Fire();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

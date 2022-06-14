@@ -35,6 +35,4 @@ private:
 	class UAIPerceptionComponent* AIPerceptionComponent;
 	
 	class UAISenseConfig_Sight* SightConfig;
-
-	APawn* PlayerPawn;
 };
