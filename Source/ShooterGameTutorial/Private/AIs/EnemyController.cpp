@@ -39,11 +39,7 @@ void AEnemyController::BeginPlay()
 
 	RunBehaviorTree(BehaviorTree);
 
-	GetBlackboardComponent()->SetValueAsVector(FName("Destination"),PlayerPawn->GetActorLocation());
-	
-	/*MoveToActor(PlayerPawn);
-	SetFocus(PlayerPawn,EAIFocusPriority::Gameplay);*/
-	
+	GetBlackboardComponent()->SetValueAsVector(FName("StartLocation"),GetPawn()->GetActorLocation());	
 }
 
 void AEnemyController::OnPlayerSeen(AActor* Actor, FAIStimulus Stimulus)
@@ -54,6 +50,7 @@ void AEnemyController::OnPlayerSeen(AActor* Actor, FAIStimulus Stimulus)
 	}
 	else
 	{
+		GetBlackboardComponent()->SetValueAsVector(FName("LastSeenLocation"), PlayerPawn->GetActorLocation());
 		GetBlackboardComponent()->ClearValue(FName("Player"));
 	}
 }
