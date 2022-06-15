@@ -28,6 +28,11 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 private:
+	AController* GetPlayerController();
+	void PlayEffects();
+	bool RayCast(FHitResult& HitResult, FVector& CameraLocation);
+	void PlayEffectsOnHit(FHitResult HitResult);
+
 	void Shoot();
 
 	bool bIsShooting = false;
@@ -59,4 +64,9 @@ private:
 	//Particle System for Impact
 	UPROPERTY(EditAnywhere)
 	UParticleSystem* ImpactParticleSystem = nullptr;
+
+	UPROPERTY(EditAnywhere)
+	USoundBase* ShootSound = nullptr;
+	UPROPERTY(EditAnywhere)
+	USoundBase* ImpactSound = nullptr;
 };

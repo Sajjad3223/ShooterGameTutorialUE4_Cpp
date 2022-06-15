@@ -57,49 +57,61 @@ void AGun::Fire() {
 	Shoot();
 }
 
-void AGun::Shoot()
-{
-	if(FireParticleSystem != nullptr)
-	{
-		UGameplayStatics::SpawnEmitterAttached(FireParticleSystem,GunMesh,FName("MuzzleFlashSocket"));
-	}
-	//TODO play a Sound
+void AGun::PlayEffects() {
+	if (FireParticleSystem != nullptr)
+		UGameplayStatics::SpawnEmitterAttached(FireParticleSystem, GunMesh, FName("MuzzleFlashSocket"));
+	if (ShootSound != nullptr)
+		UGameplayStatics::SpawnSoundAttached(ShootSound, GunMesh, FName("MuzzleFlashSocket"));
+}
 
-	//Declare Variables
-	FVector CameraLocation;
-	FRotator CameraRotation;
-	
+AController* AGun::GetPlayerController() {
 	// Get Camera Location and Rotation
 	APawn* OwnerPawn = Cast<APawn>(GetOwner());
-	AController* OwnerController = OwnerPawn->GetController();
-	OwnerController->GetPlayerViewPoint(OUT CameraLocation,OUT CameraRotation);
+	return OwnerPawn->GetController();
+}
+
+bool AGun::RayCast(FHitResult& HitResult, FVector& CameraLocation) {
+	//Declare Variables
+	FRotator CameraRotation;
+	GetPlayerController()->GetPlayerViewPoint(OUT CameraLocation, OUT CameraRotation);
 
 	//Calculate Trace End
 	FVector TraceEnd = CameraLocation + CameraRotation.Vector() * TraceRange;
-	
+
 	//LineTrace
-	FHitResult HitResult;
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor(this);
 	Params.AddIgnoredActor(GetOwner());
-	if(GetWorld()->LineTraceSingleByChannel(OUT HitResult,CameraLocation,TraceEnd,ECollisionChannel::ECC_GameTraceChannel1,Params))
+	return GetWorld()->LineTraceSingleByChannel(OUT HitResult, CameraLocation, TraceEnd, ECollisionChannel::ECC_GameTraceChannel1, Params);
+}
+
+void AGun::PlayEffectsOnHit(FHitResult HitResult) {
+	//Spawn Emitter
+	if (ImpactParticleSystem != nullptr)
+		UGameplayStatics::SpawnEmitterAtLocation(this, ImpactParticleSystem, HitResult.Location, HitResult.ImpactNormal.Rotation());
+
+	//Play Sound
+	if (ImpactSound != nullptr)
+		UGameplayStatics::SpawnSoundAtLocation(this, ImpactSound, HitResult.Location, HitResult.ImpactNormal.Rotation());
+}
+
+void AGun::Shoot()
+{
+	PlayEffects();
+
+	FVector CameraLocation;
+	FHitResult HitResult;
+
+	if(RayCast(HitResult,CameraLocation))
 	{
-		//Check if Hit Something and do the function
-		
-		//Spawn Emitter
-		if(ImpactParticleSystem != nullptr)
-			UGameplayStatics::SpawnEmitterAtLocation(this,ImpactParticleSystem,HitResult.Location,HitResult.ImpactNormal.Rotation());
-
-		//Play Sound
-
+		PlayEffectsOnHit(HitResult);
 
 		FVector ShotDirection = HitResult.Location - CameraLocation;
-		
 		//Apply Damage
 		if(HitResult.Actor != nullptr)
 		{
 			FPointDamageEvent DamageEvent(Damage,HitResult,ShotDirection,nullptr);
-			HitResult.Actor->TakeDamage(Damage,DamageEvent,OwnerController,this);
+			HitResult.Actor->TakeDamage(Damage,DamageEvent, GetPlayerController(),this);
 		}
 	}
 
