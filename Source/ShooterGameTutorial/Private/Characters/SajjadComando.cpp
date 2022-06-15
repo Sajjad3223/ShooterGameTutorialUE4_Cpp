@@ -13,7 +13,7 @@
 ASajjadComando::ASajjadComando()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(FName("CameraBoom"));
 	SpringArm->SetupAttachment(RootComponent);
 
@@ -43,13 +43,6 @@ void ASajjadComando::BeginPlay()
 	Health = MaxHealth;
 }
 
-// Called every frame
-void ASajjadComando::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-
 // Called to bind functionality to input
 void ASajjadComando::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -71,8 +64,6 @@ float ASajjadComando::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 	float Damage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 	
 	Health -= FMath::Min(Health,Damage);; // Health = Health - FMath::Min(Health,Damage)
-
-	UE_LOG(LogTemp,Warning,TEXT("Health is: %f"),Health);
 	if(IsDead())
 	{
 		//Get Game Mode
@@ -80,16 +71,20 @@ float ASajjadComando::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 		if (GameMode) {
 			//Call Handle Kills
 			GameMode->HandleKills(this);
+
+			HandleDeath();
 		}
-
-		DetachFromControllerPendingDestroy();
-		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
-		FTimerHandle DestroyTimer;
-		GetWorldTimerManager().SetTimer(DestroyTimer,this,&ASajjadComando::DestroyCharacter,DestroyDelay,false);
 	}
 	
 	return Damage;
+}
+
+void ASajjadComando::HandleDeath() {
+	DetachFromControllerPendingDestroy();
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	FTimerHandle DestroyTimer;
+	GetWorldTimerManager().SetTimer(DestroyTimer, this, &ASajjadComando::DestroyCharacter, DestroyDelay, false);
 }
 
 FGenericTeamId ASajjadComando::GetGenericTeamId() const

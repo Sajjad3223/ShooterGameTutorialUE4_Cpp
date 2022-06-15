@@ -17,9 +17,6 @@ class SHOOTERGAMETUTORIAL_API ASajjadComando : public ACharacter, public IGeneri
 public:
 	// Sets default values for this character's properties
 	ASajjadComando();
-	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -39,6 +36,8 @@ protected:
 	
 private:
 	FGenericTeamId TeamId;
+
+	void HandleDeath();
 	
 	//Axis Functions
 	void MoveForward(float AxisValue);

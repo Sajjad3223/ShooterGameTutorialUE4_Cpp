@@ -27,6 +27,8 @@ protected:
 
 	virtual void SetupInputComponent() override;
 private:
+	void PauseAndSetupWidget(class URestartableAndQuitable* Widget);
+
 	TSubclassOf<class UPlayerHud> PlayerHudClass;
 	TSubclassOf<class UPauseMenu> PauseMenuClass;
 	TSubclassOf<class UEndGame> EndGameClass;
