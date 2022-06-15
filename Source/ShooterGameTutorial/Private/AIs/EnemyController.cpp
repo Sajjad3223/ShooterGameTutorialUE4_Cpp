@@ -10,6 +10,7 @@
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
 #include "Characters/SajjadComando.h"
+#include "ShooterPlayerController.h"
 
 AEnemyController::AEnemyController()
 {
@@ -19,18 +20,17 @@ AEnemyController::AEnemyController()
 
 	AIPerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(FName("Perception Component"));
 	SightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>(FName("Sight Config"));
-
-	SightConfig->SightRadius = 700;
+	
+	SightConfig->SightRadius = 800;
 	SightConfig->LoseSightRadius = 1000;
-	SightConfig->PeripheralVisionAngleDegrees = 60;
+	SightConfig->PeripheralVisionAngleDegrees = 70;
 
 	AIPerceptionComponent->ConfigureSense(*SightConfig);
 
 	AIPerceptionComponent->OnTargetPerceptionUpdated.AddDynamic(this,&AEnemyController::OnPlayerSeen);
 
-	SetGenericTeamId(FGenericTeamId(1));
+	SetGenericTeamId(FGenericTeamId(5));
 }
-
 
 void AEnemyController::BeginPlay()
 {
@@ -43,6 +43,9 @@ void AEnemyController::BeginPlay()
 
 void AEnemyController::OnPlayerSeen(AActor* Actor, FAIStimulus Stimulus)
 {
+	ASajjadComando* PlayerCharacter = Cast<ASajjadComando>(Actor);
+	AShooterPlayerController* PlayerController = Cast<AShooterPlayerController>(PlayerCharacter->GetController());
+	if (PlayerController == nullptr) return;
 	if(Stimulus.WasSuccessfullySensed())
 	{
 		SetFocus(Actor);

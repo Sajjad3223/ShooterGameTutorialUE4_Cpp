@@ -44,7 +44,7 @@ void AShooterPlayerController::PauseGame() {
 	if (PauseMenuClass != nullptr)
 	{
 		UPauseMenu* PauseMenu = CreateWidget<UPauseMenu>(this, PauseMenuClass);
-
+		UGameplayStatics::SetGlobalTimeDilation(this, 0);
 		PauseAndSetupWidget(PauseMenu);
 
 		PauseMenu->AddToViewport();
@@ -71,7 +71,6 @@ void AShooterPlayerController::QuitGame() {
 
 void AShooterPlayerController::PauseAndSetupWidget(URestartableAndQuitable* Widget) {
 	DisableInput(this);
-	UGameplayStatics::SetGlobalTimeDilation(this, 0);
 	SetShowMouseCursor(true);
 
 	FInputModeUIOnly UiMode;
@@ -83,7 +82,7 @@ void AShooterPlayerController::PauseAndSetupWidget(URestartableAndQuitable* Widg
 void AShooterPlayerController::GameHasEnded(AActor* EndGameFocus, bool bIsWinner) {
 	if (EndGameClass != nullptr) {
 		UEndGame* EndGame = CreateWidget<UEndGame>(this, EndGameClass);
-
+		StopMovement();
 		PauseAndSetupWidget(EndGame);
 
 		EndGame->SetEndGameMessage(bIsWinner);

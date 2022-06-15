@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AIController.h"
 #include "Perception/AIPerceptionTypes.h"
+#include "GenericTeamAgentInterface.h"
 #include "EnemyController.generated.h"
 
 /**
@@ -19,7 +20,6 @@ public:
 	AEnemyController();
 
 	bool IsEnemyDead();
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
