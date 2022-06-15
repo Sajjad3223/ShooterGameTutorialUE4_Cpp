@@ -29,7 +29,7 @@ protected:
 private:
 	TSubclassOf<class UPlayerHud> PlayerHudClass;
 	TSubclassOf<class UPauseMenu> PauseMenuClass;
-	TSubclassOf<class UUserWidget> EndGameClass;
+	TSubclassOf<class UEndGame> EndGameClass;
 
 	UFUNCTION()
 	void PauseGame();

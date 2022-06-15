@@ -5,13 +5,14 @@
 
 #include "Widgets/PlayerHud.h"
 #include "Widgets/PauseMenu.h"
+#include "Widgets/EndGame.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Kismet/GameplayStatics.h"
 
 AShooterPlayerController::AShooterPlayerController() {
 	ConstructorHelpers::FClassFinder<UPlayerHud> PlayerWidget(TEXT("/Game/Widgets/WBP_PlayerHud"));
 	ConstructorHelpers::FClassFinder<UPauseMenu> PauseWidget(TEXT("/Game/Widgets/WBP_PauseMenu"));
-	ConstructorHelpers::FClassFinder<UUserWidget> EndGameWidget(TEXT("/Game/Widgets/WBP_EndGame"));
+	ConstructorHelpers::FClassFinder<UEndGame> EndGameWidget(TEXT("/Game/Widgets/WBP_EndGame"));
 
 	if (PlayerWidget.Class != nullptr)
 		PlayerHudClass = PlayerWidget.Class;
@@ -75,13 +76,18 @@ void AShooterPlayerController::QuitGame() {
 }
 
 void AShooterPlayerController::GameHasEnded(AActor* EndGameFocus, bool bIsWinner) {
-	UUserWidget* EndGame = CreateWidget<UUserWidget>(this, EndGameClass);
+	UEndGame* EndGame = CreateWidget<UEndGame>(this, EndGameClass);
 
 	DisableInput(this);
+	UGameplayStatics::SetGlobalTimeDilation(this, 0);
 	SetShowMouseCursor(true);
 
 	FInputModeUIOnly UiMode;
 	SetInputMode(UiMode);
+
+	EndGame->SetupController(this);
+
+	EndGame->SetEndGameMessage(bIsWinner);
 
 	EndGame->AddToViewport();
 }

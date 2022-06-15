@@ -75,15 +75,15 @@ float ASajjadComando::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 	UE_LOG(LogTemp,Warning,TEXT("Health is: %f"),Health);
 	if(IsDead())
 	{
-		DetachFromControllerPendingDestroy();
-		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
 		//Get Game Mode
 		AShooterGameMode* GameMode = GetWorld()->GetAuthGameMode<AShooterGameMode>();
 		if (GameMode) {
 			//Call Handle Kills
 			GameMode->HandleKills(this);
 		}
+
+		DetachFromControllerPendingDestroy();
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 		FTimerHandle DestroyTimer;
 		GetWorldTimerManager().SetTimer(DestroyTimer,this,&ASajjadComando::DestroyCharacter,DestroyDelay,false);

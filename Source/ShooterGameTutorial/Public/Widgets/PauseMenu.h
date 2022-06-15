@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
+#include "Widgets/RestartableAndQuitable.h"
 #include "PauseMenu.generated.h"
 
 /**
@@ -13,30 +13,16 @@ class UButton;
 class AShooterPlayerController;
 
 UCLASS()
-class SHOOTERGAMETUTORIAL_API UPauseMenu : public UUserWidget
+class SHOOTERGAMETUTORIAL_API UPauseMenu : public URestartableAndQuitable
 {
 	GENERATED_BODY()
 public:
 	virtual bool Initialize() override;
 
-	void SetupController(AShooterPlayerController* playerController);
-
 private:
 	UFUNCTION()
 	void ResumeGame();
-	UFUNCTION()
-	void RestartGame();
-	UFUNCTION()
-	void QuitGame();
 
 	UPROPERTY(meta = (BindWidget))
 	UButton* Resume;
-
-	UPROPERTY(meta = (BindWidget))
-	UButton* Restart;
-
-	UPROPERTY(meta = (BindWidget))
-	UButton* Quit;
-
-	AShooterPlayerController* PlayerController = nullptr;
 };
