@@ -19,6 +19,8 @@ public:
 	void ResumeGame();
 	void RestartGame();
 	void QuitGame();
+
+	virtual void GameHasEnded(AActor* EndGameFocus, bool bIsWinner) override;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -27,6 +29,7 @@ protected:
 private:
 	TSubclassOf<class UPlayerHud> PlayerHudClass;
 	TSubclassOf<class UPauseMenu> PauseMenuClass;
+	TSubclassOf<class UUserWidget> EndGameClass;
 
 	UFUNCTION()
 	void PauseGame();

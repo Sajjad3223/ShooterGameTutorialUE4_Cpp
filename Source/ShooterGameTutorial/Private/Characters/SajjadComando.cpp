@@ -7,6 +7,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "../../Public/ShooterGameMode.h"
 
 // Sets default values
 ASajjadComando::ASajjadComando()
@@ -76,6 +77,13 @@ float ASajjadComando::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 	{
 		DetachFromControllerPendingDestroy();
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+		//Get Game Mode
+		AShooterGameMode* GameMode = GetWorld()->GetAuthGameMode<AShooterGameMode>();
+		if (GameMode) {
+			//Call Handle Kills
+			GameMode->HandleKills(this);
+		}
 
 		FTimerHandle DestroyTimer;
 		GetWorldTimerManager().SetTimer(DestroyTimer,this,&ASajjadComando::DestroyCharacter,DestroyDelay,false);

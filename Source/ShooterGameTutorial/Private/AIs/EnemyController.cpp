@@ -9,6 +9,7 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
+#include "Characters/SajjadComando.h"
 
 AEnemyController::AEnemyController()
 {
@@ -55,10 +56,9 @@ void AEnemyController::OnPlayerSeen(AActor* Actor, FAIStimulus Stimulus)
 	}
 }
 
-void AEnemyController::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-	
+bool AEnemyController::IsEnemyDead() {
+	APawn* ControllerPawn = GetPawn();
+	ASajjadComando* PlayerCharacter = Cast<ASajjadComando>(ControllerPawn);
+
+	return PlayerCharacter->GetHealth() <= 0;
 }
-
-

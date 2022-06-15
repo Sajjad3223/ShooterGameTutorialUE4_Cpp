@@ -11,12 +11,16 @@
 AShooterPlayerController::AShooterPlayerController() {
 	ConstructorHelpers::FClassFinder<UPlayerHud> PlayerWidget(TEXT("/Game/Widgets/WBP_PlayerHud"));
 	ConstructorHelpers::FClassFinder<UPauseMenu> PauseWidget(TEXT("/Game/Widgets/WBP_PauseMenu"));
+	ConstructorHelpers::FClassFinder<UUserWidget> EndGameWidget(TEXT("/Game/Widgets/WBP_EndGame"));
 
 	if (PlayerWidget.Class != nullptr)
 		PlayerHudClass = PlayerWidget.Class;
 
 	if (PauseWidget.Class != nullptr)
 		PauseMenuClass = PauseWidget.Class;
+
+	if (EndGameWidget.Class != nullptr)
+		EndGameClass = EndGameWidget.Class;
 }
 
 void AShooterPlayerController::BeginPlay()
@@ -68,4 +72,16 @@ void AShooterPlayerController::RestartGame() {
 
 void AShooterPlayerController::QuitGame() {
 	ConsoleCommand("Quit");
+}
+
+void AShooterPlayerController::GameHasEnded(AActor* EndGameFocus, bool bIsWinner) {
+	UUserWidget* EndGame = CreateWidget<UUserWidget>(this, EndGameClass);
+
+	DisableInput(this);
+	SetShowMouseCursor(true);
+
+	FInputModeUIOnly UiMode;
+	SetInputMode(UiMode);
+
+	EndGame->AddToViewport();
 }

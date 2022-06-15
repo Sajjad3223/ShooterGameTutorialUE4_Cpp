@@ -17,9 +17,8 @@ class SHOOTERGAMETUTORIAL_API AEnemyController : public AAIController
 public:
 	// Sets default values for this character's properties
 	AEnemyController();
-	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+
+	bool IsEnemyDead();
 
 protected:
 	// Called when the game starts or when spawned
