@@ -8,12 +8,15 @@
 #include "Widgets/EndGame.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Kismet/GameplayStatics.h"
-#include "../Public/Widgets/RestartableAndQuitable.h"
+#include "./Widgets/RestartableAndQuitable.h"
+#include "ShooterHack.h"
 
 AShooterPlayerController::AShooterPlayerController() {
 	ConstructorHelpers::FClassFinder<UPlayerHud> PlayerWidget(TEXT("/Game/Widgets/WBP_PlayerHud"));
 	ConstructorHelpers::FClassFinder<UPauseMenu> PauseWidget(TEXT("/Game/Widgets/WBP_PauseMenu"));
 	ConstructorHelpers::FClassFinder<UEndGame> EndGameWidget(TEXT("/Game/Widgets/WBP_EndGame"));
+	
+	CheatClass = UShooterHack::StaticClass();
 
 	if (PlayerWidget.Class != nullptr)
 		PlayerHudClass = PlayerWidget.Class;

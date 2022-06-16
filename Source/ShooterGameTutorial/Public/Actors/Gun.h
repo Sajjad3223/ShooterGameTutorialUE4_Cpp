@@ -26,6 +26,9 @@ public:
 
 	int GetCurrentAmmo();
 	int GetAllAmmo();
+
+	void SetAmmo(int Ammo);
+
 protected:
 	virtual void BeginPlay() override;
 private:

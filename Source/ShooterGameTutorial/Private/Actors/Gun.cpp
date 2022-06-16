@@ -147,3 +147,6 @@ void AGun::Shoot()
 	
 }
 
+void AGun::SetAmmo(int Ammo) {
+	MaxHoldingAmmo = Ammo;
+}

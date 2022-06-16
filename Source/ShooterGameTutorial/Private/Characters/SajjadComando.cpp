@@ -83,7 +83,7 @@ float ASajjadComando::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 	AActor* DamageCauser)
 {
 	float Damage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
-	
+
 	Health -= FMath::Min(Health,Damage);; // Health = Health - FMath::Min(Health,Damage)
 	if(IsDead())
 	{
@@ -96,7 +96,6 @@ float ASajjadComando::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 			HandleDeath();
 		}
 	}
-	
 	return Damage;
 }
 

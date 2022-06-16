@@ -32,6 +32,11 @@ public:
 
 	AGun* GetActiveGun();
 
+	void SetHealth(int InHealth) {
+		Health = InHealth;
+		MaxHealth = InHealth;
+	}
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
