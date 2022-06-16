@@ -15,6 +15,14 @@ class SHOOTERGAMETUTORIAL_API UPlayerHud : public UUserWidget
 	GENERATED_BODY()
 	
 private:
+	class ASajjadComando* GetCharacter();
+
 	UFUNCTION(BlueprintPure)
 	float GetPlayerHealth();
+
+	UFUNCTION(BlueprintPure)
+	int GetCurrentAmmo();
+
+	UFUNCTION(BlueprintPure)
+	int GetAllAmmo();
 };

@@ -21,8 +21,13 @@ public:
 	//Shoot Functions
 	void StartShoot();
 	void EndShoot();
-
+	void Reload();
 	void Fire();
+
+	int GetCurrentAmmo();
+	int GetAllAmmo();
+protected:
+	virtual void BeginPlay() override;
 private:
 	AController* GetPlayerController();
 	void PlayEffects();
@@ -30,6 +35,14 @@ private:
 	void PlayEffectsOnHit(FHitResult HitResult);
 
 	void Shoot();
+
+	UPROPERTY(EditAnywhere)
+	int MaxAmmo = 100;
+	UPROPERTY(EditAnywhere)
+	int MaxMagAmmo = 30;
+
+	int MaxHoldingAmmo;
+	int CurrentAmmo;
 
 	bool bIsShooting = false;
 	float FireTimer = 0;

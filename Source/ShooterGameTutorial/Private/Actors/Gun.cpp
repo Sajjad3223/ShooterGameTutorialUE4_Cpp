@@ -20,6 +20,12 @@ AGun::AGun()
 	GunMesh->SetupAttachment(Root);
 }
 
+void AGun::BeginPlay() {
+	Super::BeginPlay();
+	CurrentAmmo = MaxMagAmmo;
+	MaxHoldingAmmo = MaxAmmo;
+}
+
 // Called every frame
 void AGun::Tick(float DeltaTime)
 {
@@ -28,8 +34,11 @@ void AGun::Tick(float DeltaTime)
 	{
 		if(FireTimer >= FireRate)
 		{
-			Shoot();
-			FireTimer = 0;
+			if (CurrentAmmo > 0)
+			{
+				Shoot();
+				FireTimer = 0;
+			}
 		}
 	}
 	
@@ -46,8 +55,34 @@ void AGun::EndShoot()
 	bIsShooting = false;
 }
 
+void AGun::Reload()
+{
+	if (CurrentAmmo >= MaxMagAmmo) return;
+
+	int AvailableAmmo = FMath::Min<int>(MaxMagAmmo, MaxHoldingAmmo);
+
+	MaxHoldingAmmo -= AvailableAmmo - CurrentAmmo;
+
+	CurrentAmmo = AvailableAmmo;
+}
+
 void AGun::Fire() {
-	Shoot();
+	if (CurrentAmmo > 0)
+	{
+		Shoot();
+	}
+	else {
+		Reload();
+	}
+}
+
+int AGun::GetCurrentAmmo()
+{
+	return CurrentAmmo;
+}
+int AGun::GetAllAmmo()
+{
+	return MaxHoldingAmmo;
 }
 
 void AGun::PlayEffects() {
@@ -90,6 +125,7 @@ void AGun::PlayEffectsOnHit(FHitResult HitResult) {
 
 void AGun::Shoot()
 {
+	CurrentAmmo--;
 	PlayEffects();
 
 	FVector CameraLocation;

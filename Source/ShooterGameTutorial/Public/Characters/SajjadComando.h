@@ -30,6 +30,8 @@ public:
 
 	float GetHealth();
 
+	AGun* GetActiveGun();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -49,6 +51,7 @@ private:
 	//Action Functions
 	void StartFire();
 	void StopFire();
+	void ReloadGun();
 
 	void ManageGuns();
 

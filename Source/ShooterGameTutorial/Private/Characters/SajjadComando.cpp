@@ -75,6 +75,7 @@ void ASajjadComando::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAction("Jump",IE_Pressed,this,&ASajjadComando::Jump);
 	PlayerInputComponent->BindAction("Fire",IE_Pressed,this,&ASajjadComando::StartFire);
 	PlayerInputComponent->BindAction("Fire",IE_Released,this,&ASajjadComando::StopFire);
+	PlayerInputComponent->BindAction("Reload",IE_Released,this,&ASajjadComando::ReloadGun);
 	
 }
 
@@ -114,13 +115,22 @@ FGenericTeamId ASajjadComando::GetGenericTeamId() const
 
 void ASajjadComando::Shoot()
 {
-	Guns[ActiveGunIndex]->Fire();
+	GetActiveGun()->Fire();
+}
+
+void ASajjadComando::ReloadGun() {
+	GetActiveGun()->Reload();
 }
 
 float ASajjadComando::GetHealth()
 {
 	// Return Health Normalized
 	return Health / MaxHealth;
+}
+
+AGun* ASajjadComando::GetActiveGun()
+{
+	return Guns[ActiveGunIndex];
 }
 
 void ASajjadComando::MoveForward(float AxisValue)
@@ -145,12 +155,12 @@ void ASajjadComando::TurnUp(float AxisValue)
 
 void ASajjadComando::StartFire()
 {
-	Guns[ActiveGunIndex]->StartShoot();
+	GetActiveGun()->StartShoot();
 }
 
 void ASajjadComando::StopFire()
 {
-	Guns[ActiveGunIndex]->EndShoot();
+	GetActiveGun()->EndShoot();
 }
 
 bool ASajjadComando::IsDead()
@@ -160,7 +170,7 @@ bool ASajjadComando::IsDead()
 
 void ASajjadComando::DestroyCharacter()
 {
-	Guns[ActiveGunIndex]->Destroy();
+	GetActiveGun()->Destroy();
 	Destroy();
 }
 

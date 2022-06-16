@@ -5,18 +5,26 @@
 
 #include "Kismet/GameplayStatics.h"
 #include "Characters/Sajjadcomando.h"
+#include "Actors/Gun.h"
 
-float UPlayerHud::GetPlayerHealth() {
+ASajjadComando* UPlayerHud::GetCharacter() {
 	//Get Player Pawn
 	APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(this, 0);
 
 	//Cast To SajjadComando
-	if (PlayerPawn == nullptr) return 0;
-	ASajjadComando* Character = Cast<ASajjadComando>(PlayerPawn);
+	if (PlayerPawn == nullptr) return nullptr;
+	return Cast<ASajjadComando>(PlayerPawn);
+}
 
-	//Return health
-	if (Character == nullptr)return 0;
-	
-	return Character->GetHealth();
-	
+
+float UPlayerHud::GetPlayerHealth() {
+	return GetCharacter()->GetHealth();
+}
+
+int UPlayerHud::GetCurrentAmmo() {
+	return GetCharacter()->GetActiveGun()->GetCurrentAmmo();
+}
+
+int UPlayerHud::GetAllAmmo() {
+	return GetCharacter()->GetActiveGun()->GetAllAmmo();
 }
