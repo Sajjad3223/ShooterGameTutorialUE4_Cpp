@@ -44,10 +44,13 @@ private:
 	void MoveRight(float AxisValue);
 	void Turn(float AxisValue);
 	void TurnUp(float AxisValue);
+	void ChangeWeapon(float AxisValue);
 
 	//Action Functions
 	void StartFire();
 	void StopFire();
+
+	void ManageGuns();
 
 	//Components
 	UPROPERTY(EditAnywhere)
@@ -60,8 +63,10 @@ private:
 
 	//Gun Properties
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<AGun> GunClass;
-	AGun* Gun;
+	TArray<TSubclassOf<AGun>> GunClasses;
+	//Guns character is Carrying
+	TArray<AGun*> Guns;
+	int ActiveGunIndex = 0;
 
 	//Health Properties
 	UPROPERTY(EditAnywhere)

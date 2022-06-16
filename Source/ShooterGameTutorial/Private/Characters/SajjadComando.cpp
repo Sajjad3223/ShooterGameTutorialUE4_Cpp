@@ -33,14 +33,31 @@ void ASajjadComando::BeginPlay()
 	GetMesh()->HideBoneByName(FName("gun"),EPhysBodyOp::PBO_None);
 
 	//  spawn a gun and attach it to character
-	if(GunClass)
-	{
-		Gun = GetWorld()->SpawnActor<AGun>(GunClass);
-		Gun->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,FName("WeaponSocket"));
-		Gun->SetOwner(this);
+	Guns.SetNum(GunClasses.Num());
+	for (int i = 0; i < GunClasses.Num();i++) {
+		auto GunClass = GunClasses[i];
+		if (GunClass)
+		{
+			Guns[i] = GetWorld()->SpawnActor<AGun>(GunClass);
+			Guns[i]->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, FName("WeaponSocket"));
+			Guns[i]->SetOwner(this);
+		}
 	}
+	ManageGuns();
 
 	Health = MaxHealth;
+}
+
+void ASajjadComando::ManageGuns() {
+	for (int i = 0; i < Guns.Num(); i++) {
+		if (i == ActiveGunIndex)
+		{
+			Guns[i]->SetActorHiddenInGame(false);
+		}
+		else {
+			Guns[i]->SetActorHiddenInGame(true);
+		}
+	}
 }
 
 // Called to bind functionality to input
@@ -53,9 +70,12 @@ void ASajjadComando::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAxis("TurnUp",this,&ASajjadComando::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("TurnRate",this,&ASajjadComando::Turn);
 	PlayerInputComponent->BindAxis("TurnUpRate",this,&ASajjadComando::TurnUp);
+	PlayerInputComponent->BindAxis("ChangeWeapon", this, &ASajjadComando::ChangeWeapon);
+
 	PlayerInputComponent->BindAction("Jump",IE_Pressed,this,&ASajjadComando::Jump);
 	PlayerInputComponent->BindAction("Fire",IE_Pressed,this,&ASajjadComando::StartFire);
 	PlayerInputComponent->BindAction("Fire",IE_Released,this,&ASajjadComando::StopFire);
+	
 }
 
 float ASajjadComando::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator,
@@ -94,7 +114,7 @@ FGenericTeamId ASajjadComando::GetGenericTeamId() const
 
 void ASajjadComando::Shoot()
 {
-	Gun->Fire();
+	Guns[ActiveGunIndex]->Fire();
 }
 
 float ASajjadComando::GetHealth()
@@ -125,12 +145,12 @@ void ASajjadComando::TurnUp(float AxisValue)
 
 void ASajjadComando::StartFire()
 {
-	Gun->StartShoot();
+	Guns[ActiveGunIndex]->StartShoot();
 }
 
 void ASajjadComando::StopFire()
 {
-	Gun->EndShoot();
+	Guns[ActiveGunIndex]->EndShoot();
 }
 
 bool ASajjadComando::IsDead()
@@ -140,6 +160,17 @@ bool ASajjadComando::IsDead()
 
 void ASajjadComando::DestroyCharacter()
 {
-	Gun->Destroy();
+	Guns[ActiveGunIndex]->Destroy();
 	Destroy();
+}
+
+void ASajjadComando::ChangeWeapon(float AxisValue) {
+	ActiveGunIndex += AxisValue;
+
+	if (ActiveGunIndex < 0)
+		ActiveGunIndex = Guns.Num() - 1;
+	if (ActiveGunIndex >= Guns.Num())
+		ActiveGunIndex = 0;
+
+	ManageGuns();
 }
